@@ -1,7 +1,6 @@
-import csv
+import numpy
+import pandas
 
-with open('pokemon.csv', 'rb') as csvfile:
-    reader = csv.reader(csvfile, delimiter=',')
-    pokemon_list = list(reader)
+pokemon_list = pd.read_csv('pokemon.csv')
 
 print pokemon_list
