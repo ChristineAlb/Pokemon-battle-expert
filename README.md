@@ -1,7 +1,7 @@
 # Pokemon-battle-expert
 A Pokemon battle expert system for prediction of battles between generation 1 Pokemon's
 
-#Todo
+# Todo
 - [x] Create python script branch
 - [x] Import pokemons to script
 - [ ] Remove all non generation 1 pokémons
