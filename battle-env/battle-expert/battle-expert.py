@@ -6,6 +6,8 @@ Gotta catch em all
 import numpy
 import pandas
 import os
+import sys
+from tmgsimple import TmgSimple
 
 # ------ Import pokemon data ------
 dir = os.path.dirname(__file__)
@@ -34,4 +36,4 @@ for i in range(0, len(irrelevantPokemon)):
         battle_list.Second_pokemon != irrelevantPokemon[i]]
     battle_list = battle_list[battle_list.Winner != irrelevantPokemon[i]]
 
-print(battle_list)
+print(sys.path)
