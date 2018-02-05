@@ -7,6 +7,8 @@ import numpy
 import pandas
 import os
 import sys
+
+# ------ Import course toolbox ------
 from tmgsimple import TmgSimple
 
 # ------ Import pokemon data ------
