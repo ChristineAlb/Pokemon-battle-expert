@@ -60,6 +60,7 @@ ylabel(attributeNames[j])
 
 # Output result to screen
 # show()
+
 # Subtract mean value from data
 Y = X - np.ones((N, 1))*X.mean(0)
 
@@ -75,4 +76,50 @@ plot(range(1, len(rho)+1), rho, 'o-')
 title('Variance explained by principal components')
 xlabel('Principal component')
 ylabel('Variance explained')
-show()
+# show()
+
+# Subtract mean value from data
+Y = X - np.ones((N, 1))*X.mean(0)
+
+# PCA by computing SVD of Y
+U, S, V = svd(Y, full_matrices=False)
+V = V.T
+# Project the centered data onto principal component space
+Z = Y * V
+
+# Indices of the principal components to be plotted
+i = 0
+j = 1
+
+# Plot PCA of the data
+f = figure()
+title('NanoNose data: PCA')
+# Z = array(Z)
+for c in range(C):
+    # select indices belonging to class c:
+    class_mask = y.A.ravel() == c
+    plot(Z[class_mask, i], Z[class_mask, j], 'o')
+legend(classNames)
+xlabel('PC{0}'.format(i+1))
+ylabel('PC{0}'.format(j+1))
+
+# Output result to screen
+# show()
+
+# (requires data structures from ex. 2.2.1 and 2.2.3)
+Y = X - np.ones((N, 1))*X.mean(0)
+U, S, V = svd(Y, full_matrices=False)
+V = V.T
+
+
+print(V[:, 1].T)
+# Projection of water class onto the 2nd principal component.
+# Note Y is a numpy matrix, while V is a numpy array.
+
+# Either convert V to a numpy.mat and use * (matrix multiplication)
+print((Y[y.A.ravel() == 4, :] * np.mat(V[:, 1]).T).T)
+
+# Or interpret Y as a numpy.aray and use @ (matrix multiplication for np.array)
+# print( (np.asarray(Y[y.A.ravel()==4,:]) @ V[:,1]).T )
+
+print('Ran Exercise 2.1.5')
