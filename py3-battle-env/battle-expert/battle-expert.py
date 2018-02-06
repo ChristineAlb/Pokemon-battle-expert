@@ -38,4 +38,4 @@ for i in range(0, len(irrelevantPokemon)):
         battle_list.Second_pokemon != irrelevantPokemon[i]]
     battle_list = battle_list[battle_list.Winner != irrelevantPokemon[i]]
 
-print(sys.version)
+print(len(battle_list))
