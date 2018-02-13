@@ -7,8 +7,8 @@ from matplotlib.pyplot import figure, plot, title, legend, xlabel, ylabel, show
 from scipy.linalg import svd
 
 # ------ Import data ----- #
-dir = os.path.dirname(__file__)
-doc = os.path.join(dir, '../battle-expert/Toolbox_Python/Data/nanonose.xls')
+dir = os.path.join(os.getcwd())
+doc = dir + '/battle-expert/Toolbox_Python/Data/nanonose.xls'
 doc = xlrd.open_workbook(doc).sheet_by_index(0)
 
 # Extract attribute names (1st row, column 4 to 12)
