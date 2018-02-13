@@ -3,37 +3,24 @@
 Gotta catch em all
 
 """
-import numpy
-import pandas
 import os
-import sys
+import xlrd
+import numpy as np
 
 # ------ Import course toolbox ------
-from tmgsimple import TmgSimple
+# from tmgsimple import TmgSimple
 
-# ------ Import pokemon data ------
-dir = os.path.dirname(__file__)
-pokemon_list = os.path.join(dir, 'datasheet/pokemon.csv')
-pokemonCompleteList = pandas.read_csv(pokemon_list)
-battle_list = os.path.join(dir, 'datasheet/combats.csv')
-battle_list = pandas.read_csv(battle_list)
+# ------ Import data ----- #
+dir = os.getcwd()
+doc = dir + '/battle-expert/datasheet/Concrete_Data.xls'
+concreteList = xlrd.open_workbook(doc).sheet_by_index(0)
 
-# ------ scope the sheet, by removing all other generations than 1 ------
-pokemon_list = pokemonCompleteList[pokemonCompleteList.Generation == 1]
-pokemon_list = pokemon_list[pokemon_list.Name.str.contains('Mega') == False]
+# Extract attribute names (1st row, column 1 to 9)
+attributeNames = concreteList.row_values(0, 0, 9)
 
-# ------ Remove # row ------
-# pokemon_list = pokemon_list.drop('#', axis=1)
-# battle_list = battle_list + 1
+# Preallocate memory, then extract excel data to matrix X
+X = np.mat(np.empty((1030, 9)))
+for i, col_id in enumerate(range(0, 9)):
+    X[:, i] = np.mat(concreteList.col_values(col_id, 1, 1031)).T
 
-# ------ Identify deleted pokemon id -----
-irrelevantPokemon = pokemonCompleteList.index[
-    ~pokemonCompleteList.index.isin(pokemon_list.index)] + 1
-
-# ------ Remove unreleveant battles from combats ------
-for i in range(0, len(irrelevantPokemon)):
-    battle_list = battle_list[
-        battle_list.First_pokemon != irrelevantPokemon[i]]
-    battle_list = battle_list[
-        battle_list.Second_pokemon != irrelevantPokemon[i]]
-    battle_list = battle_list[battle_list.Winner != irrelevantPokemon[i]]
+print(X)
