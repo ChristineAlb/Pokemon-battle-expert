@@ -1,11 +1,10 @@
-# Pokemon-battle-expert
-A Pokemon battle expert system for prediction of battles between generation 1 Pokemon's
+# Concrete-Analyst
+Concrete expert system to analyse concrete
 
 # Todo
 - [x] Create python script branch
-- [x] Import pokemons to script
-- [ ] Remove all non generation 1 pokémons
-- [ ] Remove all non generation 1 pokémons from battles
-- [ ] Understand python
-- [ ] Become the ultimate pokemon master
-- [ ] Catch 'em all
+- [x] Import concrete data to script
+- [ ] Implement Exercise 2.1
+  - [ ] Do summary statistics
+  - [ ] Convert to pandas list instead of numpy
+  - [ ] Create discrete collumns, e.g. Age group, with fly ash, with slag, with superplastics
