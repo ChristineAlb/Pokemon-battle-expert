@@ -16,24 +16,35 @@ from matplotlib.pyplot import figure, plot, title, legend, xlabel, ylabel, show
 dir = os.getcwd()
 doc = dir + '/battle-expert/datasheet/Concrete_Data.xls'
 concreteList = pd.read_excel(doc)
+concreteList.columns = [
+    'Cement', 'Slag', 'Ash', 'Water', 'Superplasticiziser', 'Coarse Aggregate',
+    'Fine Aggregate', 'Age', 'Strenght']
 
 # Extract attribute names (1st row, column 1 to 9)
 attributeNames = concreteList.head(0)
 
 # Summary statistics of the compressive strenght
-concreteStrength = concreteList.iloc[:, 8:9]
+concreteStrength = concreteList['Strenght']
 concreteStrength.describe()
 
+# Calculate quantiles
 concreteStrengthQuantiles = concreteStrength.quantile([.25, .5, .75])
 concreteStrengthQuantiles
+
+# Create Strenght catagory column based on conditions
+conditions = [
+    (concreteList['Strenght'] < concreteStrengthQuantiles.iloc[0]),
+    (concreteList['Strenght'] > concreteStrengthQuantiles.iloc[2])]
+choices = ['Low', 'High']
+concreteList['Strenght Catagory'] = np.select(
+    conditions, choices, default='Medium')
+
+# Summary of the new catagory
+concreteList['Strenght Catagory'].value_counts()
 
 # Compute values of N and M.
 N = len(np.empty((len(concreteList.col_values(0)) - 1)))
 M = len(concreteList.row_values(0))
-
-concreteList['Strenght Catagory'] = concreteList.iloc[:, 8:9] >= 50, 'Yes', 'no')
-
-concreteList
 
 '''
 # Data attributes to be plotted
