@@ -4,8 +4,9 @@ Gotta catch em all
 
 """
 import os
-import xlrd
+# import xlrd
 import numpy as np
+import pandas as pd
 from matplotlib.pyplot import figure, plot, title, legend, xlabel, ylabel, show
 
 # ------ Import course toolbox ------
@@ -14,27 +15,25 @@ from matplotlib.pyplot import figure, plot, title, legend, xlabel, ylabel, show
 # ------ Import data ----- #
 dir = os.getcwd()
 doc = dir + '/battle-expert/datasheet/Concrete_Data.xls'
-concreteList = xlrd.open_workbook(doc).sheet_by_index(0)
+concreteList = pd.read_excel(doc)
 
 # Extract attribute names (1st row, column 1 to 9)
-attributeNames = concreteList.row_values(0, 0, len(concreteList.row_values(0)))
+attributeNames = concreteList.head(0)
 
-# Preallocate memory, then extract excel data to matrix X
-X = np.mat(np.empty(
-    (len(concreteList.col_values(0)) - 1, len(concreteList.row_values(0)))))
-for i, col_id in enumerate(range(0, 9)):
-    X[:, i] = np.mat(concreteList.col_values(
-        col_id, 1, len(concreteList.col_values(0)))).T
+# Summary statistics of the compressive strenght
+concreteStrength = concreteList.iloc[:, 8:9]
+concreteStrength.describe()
 
-# Summary statistics of the datasheet
-summary = X.head
-summary = summary.transpose()
-print(X.head)
+concreteStrengthQuantiles = concreteStrength.quantile([.25, .5, .75])
+concreteStrengthQuantiles
 
 # Compute values of N and M.
 N = len(np.empty((len(concreteList.col_values(0)) - 1)))
 M = len(concreteList.row_values(0))
 
+concreteList['Strenght Catagory'] = concreteList.iloc[:, 8:9] >= 50, 'Yes', 'no')
+
+concreteList
 
 '''
 # Data attributes to be plotted
