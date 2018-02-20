@@ -8,6 +8,7 @@ import os
 import numpy as np
 import pandas as pd
 from matplotlib.pyplot import figure, plot, title, legend, xlabel, ylabel, show
+from scipy.linalg import svd
 
 # ------ Import course toolbox ------
 # from tmgsimple import TmgSimple
@@ -42,15 +43,26 @@ concreteList['Strenght Catagory'] = np.select(
 # Summary of the new catagory
 concreteList['Strenght Catagory'].value_counts()
 
+# Extract class names to python list,
+# then encode with integers (dict)
+classLabels = concreteList['Strenght Catagory']
+classNames = sorted(set(classLabels))
+classDict = dict(zip(classNames, range(5)))
+
 # Compute values of N and M.
-N = len(np.empty((len(concreteList.col_values(0)) - 1)))
-M = len(concreteList.row_values(0))
+N = concreteList.shape[0]
+M = concreteList.shape[1]
+C = len(classNames)
 
-'''
+# Extract vector y, convert to np matrix and transpose
+y = np.mat([classDict[value] for value in classLabels]).T
+X = np.array(concreteList.iloc[:, 0:-2])
+
 # Data attributes to be plotted
-i = 0
-j = 1
+i = 1
+j = 6
 
+# attribute names, and a title.
 f = figure()
 title('NanoNose data')
 
@@ -58,8 +70,21 @@ for c in range(C):
     # select indices belonging to class c:
     class_mask = y.A.ravel() == c
     plot(X[class_mask, i], X[class_mask, j], 'o')
-
 legend(classNames)
-xlabel(attributeNames[i])
-ylabel(attributeNames[j])
-'''
+
+# Substract the mean
+Y = X - np.ones((N, 1)) * X.mean(0)
+
+# PCA by computing SVD of Y
+U, S, V = svd(Y, full_matrices=False)
+
+# Compute variance explained by principal components
+rho = (S*S) / (S*S).sum()
+
+# Plot variance explained
+figure()
+plot(range(1, len(rho)+1), rho, 'o-')
+title('Variance explained by principal components')
+xlabel('Principal component')
+ylabel('Variance explained')
+show()
